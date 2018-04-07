@@ -33,31 +33,7 @@
 
 </head>
 <script src="assets/js/jquery.min.js"></script>
-<script type="text/javascript">
 
-    $(document).ready(function () {
-        var data = $('#myform').serialize();
-        $.ajax({
-
-            type : 'POST',
-            data : data ,
-            url : '/LoginServlet',
-
-            success : function (resp) {
-
-
-            if (rep == "oke"){
-                setTimeout('window.location.href = "sucess.html",4000');
-
-        }
-        else{
-                $("#info").html("<div class='alert alert-danger'"+resp+">");
-            }
-            }
-        })
-
-    })
-</script>
 
 
 <body>
@@ -79,9 +55,9 @@
                             <!--<h4 class="text-uppercase font-bold m-b-0">Sign In</h4>-->
                         </div>
                         <div class="account-content">
-                            <form class="form-horizontal" method="post" action ="LoginServlet">
+                            <form class="form-horizontal" method="post"  id="LoginForm">
 
-                                <span id="info"></span>
+                                <div id="msg"><span id="info"></span></div>
                                 <div class="form-group m-b-20">
                                     <div class="col-xs-12">
                                         <span id ="res1"></span>
@@ -111,7 +87,7 @@
 
                                 <div class="form-group account-btn text-center m-t-10">
                                     <div class="col-xs-12">
-                                        <input  type="submit" class="btn btn-lg btn-primary btn-block" value="Log In">
+                                        <input  type="submit" class="btn btn-lg btn-primary btn-block" value="Log In" id="login">
                                     </div>
                                 </div>
 
@@ -137,7 +113,39 @@
         </div>
     </div>
 </section>
+<script type="text/javascript">
 
+    $(document).ready(function (e) {
+        $('#LoginForm').submit(function () {
+            $.ajax({
+                type : "POST",
+                url : "/LoginServlet",
+                data : {
+                    username : $('#User').val(),
+                    password : $('#password').val()
+
+                },
+                success : function (data) {
+                    if(data == 'hello'){
+                        window.location.replace("/Login.jps");
+                    }
+                    else{
+                        $("#msg").fadeIn(1000,function () {
+                            $("#msg").html("<div class='alert alert-danger'>ID or Password invalid </div>");
+                            $("#login").html('login');
+
+                        })
+                    }
+
+                }
+
+            })
+
+            return false;
+        })
+
+    })
+</script>
 
 <!-- jQuery  -->
 
